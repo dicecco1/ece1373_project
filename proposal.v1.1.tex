@@ -27,7 +27,7 @@
 \maketitle
 
 \section{Group Members}
-Joe Smith, John Doe, Jane Doe
+Roberto Dicecco, Muhammad Talha Malik, John Adler
 
 \section{Introduction}
 \begin{itemize}
@@ -36,9 +36,12 @@ Joe Smith, John Doe, Jane Doe
 \item A brief literature search to identify similar projects and then investigating the pros and cons of them.
 \end{itemize}
 
+Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will accelerate the training and inference in CNNs using Fast Fourier Transform (FFT) algorithm.
+
+
 \section{Goal}
 \begin{itemize}
-\item 
+\item
 A brief explanation of what you want to achieve in your project and if possible what
 advantage it has over the existing methods.
 \end{itemize}
@@ -64,10 +67,15 @@ An example block diagram can be viewed at \href{http://www.eecg.toronto.edu/~pc/
 Note that it should also indicate the blocks you need to custom-build and the ones that you are obtaining from elsewhere.
 \end{itemize}
 
+\subsection{Optimizing CNNs using FFT}
+Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs.  
+
+An FFT-based convolution for each convolutional layer can be broken up into $3$ steps: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT of the outputs \cite{FFT1}.
+
 
 \section{Testing}
 \begin{itemize}
-\item 
+\item
 Include your testing procedure as well as test cases.
 For example, describe how you would test key features.
 \end{itemize}
@@ -80,7 +88,7 @@ For example, describe how you would test key features.
 \item Strengths and weaknesses of your team.
 \end{itemize}
 
- 
+
 \section{Milestones}
 \begin{itemize}
 \item Point form list of goals you plan to achieve each week.
@@ -88,5 +96,8 @@ For example, describe how you would test key features.
 \item It is strongly recommended that you develop several working phases in your project, each of which could be used as a final demo.  Unexpected things happen, bugs that cannot be found, unexpected complexity... The worst case scenario is to have nothing working at the end.  Plan for intermediate milestones that can be demonstrated.
 \end{itemize}
 
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
   \end{document}
-  
