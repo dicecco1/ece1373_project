@@ -27,7 +27,7 @@
 \maketitle
 
 \section{Group Members}
-Roberto Dicecco, Muhammad Talha Malik, John Adler
+Roberto DiCecco, Muhammad Talha Malik, John Adler
 
 \section{Introduction}
 \begin{itemize}
@@ -47,16 +47,37 @@ advantage it has over the existing methods.
 \end{itemize}
 
 \section{Specifications}
-Write this section in point form.
 \begin{itemize}
-\item Which board are you considering to use?  Explain why.
+\item The board that we will be using is the ADM-PCIE-7V3 Xilinx Alpha Data card 
+with Virtex-7 690T. The reason for this selection is to take advantage of the 
+Xilinx SDAccel platform for the project. 
+
+\item The system will involve several different engines to be used for computing 
+convolution for Convolutional Neural Networks (CNNs). Each convolution engine 
+will be implemented as one of three different potential architectures: a standard 
+convolution engine, a matrix multiply based convolution engine, and a Fast Fourier 
+Transform based convolution engine. 
+
 \item Functions and features of your design.
 Describe any algorithms you want to implement.
-\item Peripheral Requirements: other equipment or external hardware needed (e.x. camera, VGA display, keyboard, etc..).
-\item Constraints and limitations of your design.
-\end{itemize}
+
+
+\item Peripheral Requirements: no other equipment is required other than the machine 
+containing the ADM-PCIE-7V3.
+\item Constraints and limitations: the designs are required to operate at 200MHz due 
+to the board specifications and they must be written in C or OpenCL and be compatible 
+with the Xilinx SDAccel platform. 
 
 \section{System Overview}
+
+The high-level synthesis flow that will be used for this project will be the Xilinx 
+SDAccel flow. 
+
+The system that we will build for this project is the AlexNet CNN, though the work 
+will be applicable to other CNNs as well. The design of this system will involve the 
+selection between several different algorithms for the convolutional layers of the 
+network.
+
 \begin{itemize}
 \item Provide an adequate description of the system you want to build for your design.
 \item What will be implemented using high-level synthesis?
@@ -74,14 +95,20 @@ An FFT-based convolution for each convolutional layer can be broken up into $3$ 
 
 
 \section{Testing}
-\begin{itemize}
-\item
-Include your testing procedure as well as test cases.
-For example, describe how you would test key features.
-\end{itemize}
-
+The testing procedure will be segmented into three primary steps for each design in the project. 
+The first step will involve algorithmic testing in a separate C testbench similar to the usual C 
+simulation in Vivado HLS. This process will be conducted while experimenting with the algorithms 
+to improve throughput. The second step will involve using test benches within the Caffe environment 
+to ensure that the HLS kernels are properly integrated with the Caffe source code. Finally, the 
+hardware versions of the HLS kernels will be tested within the framework using the Alexnet network 
+against a subset of the Imagenet validation set to ensure functional correctness and accuracy 
+within the full system. 
 
 \section{Risk}
+
+One primary risk for the project is that ramp up time for the toolset could be longer than 
+anticipated, which could result in delays with respect to finishing the design of each kernel. 
+
 \begin{itemize}
 \item Identify risks attributed to your design which may cause your project to fail.
 \item Provide a contingency plan, develop milestones accordingly -- see Milestones section, for example, plan a catch up week where you are not planning any deliverables.
@@ -100,4 +127,4 @@ For example, describe how you would test key features.
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
-  \end{document}
+\end{document}
