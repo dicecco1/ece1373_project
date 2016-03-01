@@ -36,7 +36,7 @@ Roberto DiCecco, Muhammad Talha Malik, John Adler
 \item A brief literature search to identify similar projects and then investigating the pros and cons of them.
 \end{itemize}
 
-Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will accelerate the training and inference in CNNs using Fast Fourier Transform (FFT) algorithm.
+Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the Fast Fourier Transform (FFT) algorithm to accelerate the training and inference in CNNs.
 
 
 \section{Goal}
@@ -92,7 +92,7 @@ Note that it should also indicate the blocks you need to custom-build and the on
 \subsection{Optimizing CNNs using FFT}
 Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs.  
 
-An FFT-based convolution for each convolutional layer can be broken up into $3$ steps: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT of the outputs \cite{FFT1}.
+An FFT-based convolution for each convolutional layer can be broken up into $3$ steps: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT (iFFT) of the outputs \cite{FFT1}. Although convolutions can be computed efficiently as products in the Fourier domain, the overheads incurred in computing the FFTs and iFFTs can be significant depending on the size of the inputs and filters. 
 
 
 \section{Testing}
