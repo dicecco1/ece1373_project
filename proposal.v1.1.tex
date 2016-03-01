@@ -119,9 +119,12 @@ anticipated, which could result in delays with respect to finishing the design o
 
 \section{Milestones}
 \begin{itemize}
-\item Point form list of goals you plan to achieve each week.
-\item Describe the responsibilities of each group member.
-\item It is strongly recommended that you develop several working phases in your project, each of which could be used as a final demo.  Unexpected things happen, bugs that cannot be found, unexpected complexity... The worst case scenario is to have nothing working at the end.  Plan for intermediate milestones that can be demonstrated.
+    \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with the SDAccel tools through a simple HLS kernel (e.g. "Hello World"). 
+    \item Also in the first week, Roberto will implement a reprogram layer inside of Caffe to allow for decouple reprogramming between groups of layers. 
+    \item In the second week, each of us will create our C implementations of the algorithms that we are each targeting for each of the convolution layers.
+    \item In the following two weeks each of us will focus on trying to improve throughput of our respective designs under the different layer constraints of AlexNet.
+    \item Afterward, we will analyze the results of the respective designs, and decide which architecture will be suitable for the respective layers. Then we will begin system integration with Caffe.
+    \item In the last week we will conduct additional tests of the system with images from the ImageNet validation database. 
 \end{itemize}
 
 
