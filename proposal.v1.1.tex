@@ -62,7 +62,11 @@ Where\\
 \hspace*{2em} A is the input frame;\\
 \hspace*{2em} B is the kernel frame.\\
 
-% TODO mat mul
+An alternative approach to performing the calculations involves using matrix multiplication.
+The key to this approach is that the convolution operation is essential a series of dot products.
+To take advantage of this, data is first preprocessed by ``stretching'' it -- replicating values into a larger matrix in a specific order, dependent on the filter dimensions.
+This new matrix can then be sent directly to one of many efficient linear algebra solvers, such as BLAS (which is used in the Caffe framework).
+The resultant matrix is the compressed back to the desired output dimensions of the convolutional layer.
 
 Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the Fast Fourier Transform (FFT) algorithm to accelerate the training and inference in CNNs.
 
