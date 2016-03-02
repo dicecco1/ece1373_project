@@ -86,7 +86,7 @@ Xilinx SDAccel platform for the project.
 
 \item The system will involve several different engines to be used for computing
 convolution for Convolutional Neural Networks (CNNs). Each convolution engine
-will be implemented as one of three different potential architectures: a standard
+will be implemented as one of three different potential architectures: a direct
 convolution engine, a matrix multiply based convolution engine, and a Fast Fourier
 Transform based convolution engine.
 
@@ -139,6 +139,18 @@ Although convolutions can be computed efficiently as products in the Fourier dom
 
 There are some potential drawbacks associated with this approach. Computing direct convolution is much easier to implement in practice as compared to a well tuned FFT implementation. In addition to its complexity, the FFT requires feature maps to be padded to a special size, such as a power of two. Moreover, additional memory is required to store the filter matrices in the Fourier domain which might become prohibitively expensive in terms of memory for large networks.
 
+\subsection{Direct Convolution} 
+
+Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
+due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware 
+to suit the access and branching patterns of the system, such that there is negligible performance loss while achieving high
+levels of parallelism with this approach. High-level synthesis directives allow for the parallelism of the algorithm to be better
+exploited through the use of unroll and pipeline directives as needed. 
+
+This approach can potentially result in high performance for certain convolution layers as there is minimal pre-processing overhead
+required prior to computing the results. On the other hand, it may be much more difficult to achieve higher performance in the case of
+larger filter sizes as the area and timing requirements to unroll these sorts of layers may be prohibitively expensive. 
+
 \begin{figure}[!h]
 \begin{center}
 \centering
@@ -178,7 +190,7 @@ so tool related issues could be a problem in the future.
 	allow for the reprogramming of the FPGA to be decoupled from the kernel execution 
 	(this functionality has been implemented, but needs to be refined through a separate layer). 
     \item In the second week, each of us will create our C implementations of the algorithms 
-	that we are each targeting for each of the convolution layers. Roberto: Standard convolution 
+	that we are each targeting for each of the convolution layers. Roberto: Direct convolution 
 	using nested loops, Muhammad: FFT based convolution, John: matrix multiply based convolution. 
 	\item In the second week, Roberto will also make some updates to the framework to accommodate
 	multiple layers in a single binary, and update it to include batch support. 
