@@ -73,11 +73,8 @@ convolution for Convolutional Neural Networks (CNNs). Each convolution engine
 will be implemented as one of three different potential architectures: a standard
 convolution engine, a matrix multiply based convolution engine, and a Fast Fourier
 Transform based convolution engine.
-
-\item Functions and features of your design.
-Describe any algorithms you want to implement.
-
-
+\item The final system will be able to classify images using the AlexNet CNN, with 
+comparable accuracy to the baseline implementations found in Caffe. 
 \item Peripheral Requirements: no other equipment is required other than the machine
 containing the ADM-PCIE-7V3.
 \item Constraints and limitations: the designs are required to operate at 200MHz due
@@ -94,7 +91,8 @@ AlexNet convolutional layers.
 The system that we will build for this project is the AlexNet CNN, though the work 
 will be applicable to other CNNs as well. The design of this system will involve the 
 selection between several different algorithms for the convolutional layers of the 
-network. 
+network as outlined in \ref{section:intro}. These implementations will then be ported
+to the Caffe CNN framework to be used within a full CNN (AlexNet). 
 
 Each convolutional layer will be designed with two potential constraints in mind: 
 maximum throughput for a given layer without area constraints and maximum throughput
