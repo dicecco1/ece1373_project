@@ -105,8 +105,6 @@ with the Xilinx SDAccel platform.
 
 \section{System Overview}\label{section:overview}
 
-
-
 The high-level synthesis flow that will be used for this project will be the Xilinx
 SDAccel flow. This will be used to implement each potential architecture for the
 AlexNet convolutional layers.
@@ -125,6 +123,18 @@ maximum throughput for a given layer without area constraints and maximum throug
 for a given layer with area constraints to allow for the accommodation of other
 layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Connected
 layers which have already been implemented.
+\subsection{Direct Convolution}
+Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
+due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware
+to suit the access and branching patterns of the system, such that there is negligible performance loss while achieving high
+levels of parallelism with this approach. High-level synthesis directives allow for the parallelism of the algorithm to be better
+exploited through the use of unroll and pipeline directives as needed.
+
+This approach can potentially result in high performance for certain convolution layers as there is minimal pre-processing overhead
+required prior to computing the results. On the other hand, it may be much more difficult to achieve higher performance in the case of
+larger filter sizes as the area and timing requirements to unroll these sorts of layers may be prohibitively expensive.
+
+
 
 \subsection{Matrix Multiplication Algorithm}
 Implementing the matrix multiplication technique efficiently in hardware similar to that implemented in software in the Caffe framework will be challenging.
@@ -147,17 +157,6 @@ There are some potential drawbacks associated with this approach. Computing dire
 \label{CNN-FFT}
 \end{center}
 \end{figure}
-\subsection{Direct Convolution}
-Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
-due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware
-to suit the access and branching patterns of the system, such that there is negligible performance loss while achieving high
-levels of parallelism with this approach. High-level synthesis directives allow for the parallelism of the algorithm to be better
-exploited through the use of unroll and pipeline directives as needed.
-
-This approach can potentially result in high performance for certain convolution layers as there is minimal pre-processing overhead
-required prior to computing the results. On the other hand, it may be much more difficult to achieve higher performance in the case of
-larger filter sizes as the area and timing requirements to unroll these sorts of layers may be prohibitively expensive.
-
 
 
 \section{Testing}\label{section:testing}
