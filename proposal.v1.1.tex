@@ -30,11 +30,11 @@
 Roberto DiCecco, Muhammad Talha Malik, John Adler
 
 \section{Introduction}\label{section:intro}
-\begin{itemize}
-\item Overview of what you want to build.
-\item A brief description why this project is interesting and why you want to do it.
-\item A brief literature search to identify similar projects and then investigating the pros and cons of them.
-\end{itemize}
+%\begin{itemize}
+%\item Overview of what you want to build.
+%\item A brief description why this project is interesting and why you want to do it.
+%\item A brief literature search to identify similar projects and then investigating the pros and cons of them.
+%\end{itemize}
 
 Convolutional networks are one of the most widely employed architectures in machine learning. Although convolutional networks deliver impressive results across a range of machine learning tasks, they are computationally demanding which limits their deployability. The focus of this project is speeding up the application of convolutional neural networks. Convolutional layers generally consume the bulk of the processing time, and so in this work we present different engines to be used for speeding up these layers.
 
@@ -73,10 +73,13 @@ convolution for Convolutional Neural Networks (CNNs). Each convolution engine
 will be implemented as one of three different potential architectures: a standard
 convolution engine, a matrix multiply based convolution engine, and a Fast Fourier
 Transform based convolution engine.
+
 \item The final system will be able to classify images using the AlexNet CNN, with 
 comparable accuracy to the baseline implementations found in Caffe. 
+
 \item Peripheral Requirements: no other equipment is required other than the machine
 containing the ADM-PCIE-7V3.
+
 \item Constraints and limitations: the designs are required to operate at 200MHz due
 to the board specifications and they must be written in C or OpenCL and be compatible
 with the Xilinx SDAccel platform.
@@ -100,15 +103,18 @@ for a given layer with area constraints to allow for the accommodation of other
 layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Connected
 layers which have already been implemented. 
 
-\begin{itemize}
-\item Provide an adequate description of the system you want to build for your design.
-\item What will be implemented using high-level synthesis?
-\item What high-level synthesis flow do you plan to use?
-\item You may include a flow chart (e.x. to describe the flow of data between various functions of your algorithm)
-\item Include a block diagram and refer to it.
-An example block diagram can be viewed at \href{http://www.eecg.toronto.edu/~pc/courses/532/2008/handouts/blockdiagram.pdf}{http://www.eecg.toronto.edu/\~{}pc/courses/532 /2008/handouts/blockdiagram.pdf}.
-Note that it should also indicate the blocks you need to custom-build and the ones that you are obtaining from elsewhere.
-\end{itemize}
+%\begin{itemize}
+%\item Provide an adequate description of the system you want to build for your design.
+%\item What will be implemented using high-level synthesis?
+%\item What high-level synthesis flow do you plan to use?
+%\item You may include a flow chart (e.x. to describe the flow of data between various functions of your algorithm)
+%\item Include a block diagram and refer to it.
+%An example block diagram can be viewed at \href{http://www.eecg.toronto.edu/~pc/courses/532/2008/handouts/blockdiagram.pdf}{http://www.eecg.toronto.edu/\~{}pc/courses/532 /2008/handouts/blockdiagram.pdf}.
+%Note that it should also indicate the blocks you need to custom-build and the ones that you are obtaining from elsewhere.
+%\end{itemize}
+
+\subsection{Matrix Multiplication Algorithm}
+
 
 \subsection{FFT-based Algorithm}
 Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs. An FFT-based convolution for each convolutional layer can be broken up into $3$ steps as shown in Fig.~\ref{CNN-FFT}: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT (iFFT) of the outputs.
