@@ -1,0 +1,16 @@
+# vim temp files
+*.swp
+
+# LaTex generated files
+*.log
+*.dvi
+*.aux
+*.bbl
+*.blg
+*.toc
+*.out
+*.loa
+*.lof
+*.lot
+*.ps
+*.pdf
