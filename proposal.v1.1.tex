@@ -80,7 +80,7 @@ with Virtex-7 690T. The reason for this selection is to take advantage of the
 Xilinx SDAccel platform for the project.
 
 \item The system will involve several different engines to be used for computing
-convolution for Convolutional Neural Networks (CNNs). Each convolution engine
+convolution for CNNs. Each convolution engine
 will be implemented as one of three different potential architectures: a direct
 convolution engine, a matrix multiply based convolution engine, and a Fast Fourier
 Transform based convolution engine.
@@ -127,7 +127,14 @@ Convolutional layers generally consume the bulk of the processing time in CNNs. 
 Although convolutions can be computed efficiently as products in the Fourier domain, the overheads incurred in computing the FFTs and iFFTs can be significant depending on the size of the inputs and filters. Modern convolutional networks use large size filters which makes the overheads of computing the FFTs worthwhile because we can effectively reuse our FFTs many times which compensates for the overhead \cite{FFT1}.
 
 There are some potential drawbacks associated with this approach. Computing direct convolution is much easier to implement in practice as compared to a well tuned FFT implementation. In addition to its complexity, the FFT requires feature maps to be padded to a special size, such as a power of two. Moreover, additional memory is required to store the filter matrices in the Fourier domain which might become prohibitively expensive in terms of memory for large networks.
-
+\begin{figure}[!h]
+\begin{center}
+\centering
+\includegraphics[width=1\columnwidth]{CNN-FFT.eps}
+\caption{Block diagram showing FFT-based convolution in CNNs}
+\label{CNN-FFT}
+\end{center}
+\end{figure}
 \subsection{Direct Convolution}
 Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
 due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware
@@ -139,14 +146,7 @@ This approach can potentially result in high performance for certain convolution
 required prior to computing the results. On the other hand, it may be much more difficult to achieve higher performance in the case of
 larger filter sizes as the area and timing requirements to unroll these sorts of layers may be prohibitively expensive.
 
-\begin{figure}[!h]
-\begin{center}
-\centering
-\includegraphics[width=1\columnwidth]{CNN-FFT.eps}
-\caption{Block diagram showing FFT-based convolution in CNNs}
-\label{CNN-FFT}
-\end{center}
-\end{figure}
+
 
 \section{Testing}\label{section:testing}
 
