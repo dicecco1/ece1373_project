@@ -44,7 +44,23 @@ different approaches for implementing convolutions: the nested-loop based approa
 the matrix multiply based approach, and the Fast Fourier Transform (FFT) based approach. The architecture
 exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet. 
 
-% TODO standard conv
+One of the simplest approaches to implementing convolution is to implement it without any pre-processing of the data.
+This can be done by implementing convolution based off of equation \ref{eq:conv} as a series of nested loops. This has been
+the focus of other works, namely \cite{conv_zhang} which achieved significantly higher performance than prior implementations. 
+This approach has the potential for high levels of parallelism as the multiplications and many of the accumulations can be done
+in parallel. 
+
+\begin{equation}\label{eq:conv}
+C_{i,j} = \sum_{p=0,q=0}^{p=K_x,q=K_y}A_{i\cdot S_y + p, j\cdot S_x + q}\cdot B_{p,q} 
+\end{equation}
+Where\\ 
+\hspace*{2em} $C_{i,j}$ is the output at indices i,j;\\
+\hspace*{2em} $K_x$ is the horizontal dimension of the kernel;\\
+\hspace*{2em} $K_y$ is the vertical dimension of the kernel;\\
+\hspace*{2em} $S_x$ is the horizontal stride;\\
+\hspace*{2em} $S_y$ is the vertical stride;\\
+\hspace*{2em} A is the input frame;\\
+\hspace*{2em} B is the kernel frame.\\
 
 % TODO mat mul
 
@@ -164,6 +180,8 @@ so tool related issues could be a problem in the future.
     \item In the second week, each of us will create our C implementations of the algorithms 
 	that we are each targeting for each of the convolution layers. Roberto: Standard convolution 
 	using nested loops, Muhammad: FFT based convolution, John: matrix multiply based convolution. 
+	\item In the second week, Roberto will also make some updates to the framework to accommodate
+	multiple layers in a single binary, and update it to include batch support. 
     \item In the following two weeks each of us will focus on trying to improve throughput of our 
 	respective designs under the different layer constraints of AlexNet.
     \item Afterwards, we will analyze the results of the respective designs, and decide which 
