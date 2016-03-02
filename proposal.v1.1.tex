@@ -50,8 +50,9 @@ Fourier transforms can provide a significant speedup in the computation of convo
 %advantage it has over the existing methods.
 %\end{itemize}
 
-The goal of this project is to evaluate the performance -- runtime and area in this case, since performance in a machine learning context usually means accuracy -- of various hardware implemententions of convolution layers.
-Using the three implementation outlines described in Section~\ref{section:intro}, 
+The goal of this project is to evaluate the performance -- runtime and area in this case, since performance in a machine learning context usually means accuracy -- of various hardware implemententions of convolutional layers.
+Using the three techniques outlined in Section~\ref{section:intro}, optimized hardware implementations that will run on an FPGA will be designed.
+These will then be benchmarked against existing CPU and GPU implementations, with the expectation that (some of) the new hardware implementations will be able to achieve improved performance.
 
 \section{Specifications}\label{section:spec}
 \begin{itemize}
