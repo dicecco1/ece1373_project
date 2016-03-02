@@ -72,6 +72,13 @@ The goal of this project is to evaluate the performance -- runtime and area in t
 Using the three techniques outlined in Section~\ref{section:intro}, optimized hardware implementations that will run on an FPGA will be designed.
 These will then be benchmarked against existing CPU and GPU implementations, with the expectation that (some of) the new hardware implementations will be able to achieve improved performance.
 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{system_diagram.png}
+    \caption{System Diagram for FPGA Caffe}
+    \label{fig:system_diag}
+\end{figure*}
+
 \section{Specifications}\label{section:spec}
 
 \begin{itemize}
@@ -98,12 +105,7 @@ with the Xilinx SDAccel platform.
 
 \section{System Overview}\label{section:overview}
 
-\begin{figure*}[ht]
-    \centering
-    \includegraphics[width=0.9\textwidth]{system_diagram.png}
-    \caption{System Diagram for FPGA Caffe}
-    \label{fig:system_diag}
-\end{figure*}
+
 
 The high-level synthesis flow that will be used for this project will be the Xilinx
 SDAccel flow. This will be used to implement each potential architecture for the
@@ -114,9 +116,9 @@ will be applicable to other CNNs as well. The design of this system will involve
 selection between several different algorithms for the convolutional layers of the
 network as outlined in \ref{section:intro}. These implementations will then be ported
 to the Caffe CNN framework to be used within a full CNN (AlexNet). The full system
-is shown in Figure \ref{fig:system_diag}, which illustrates a potential layer 
-combination for a given binary. It is also possible that several binaries will be 
-used to emulate using potentially many FPGAs. 
+is shown in Figure \ref{fig:system_diag}, which illustrates a potential layer
+combination for a given binary. It is also possible that several binaries will be
+used to emulate using potentially many FPGAs.
 
 Each convolutional layer will be designed with two potential constraints in mind:
 maximum throughput for a given layer without area constraints and maximum throughput
