@@ -95,7 +95,7 @@ Note that it should also indicate the blocks you need to custom-build and the on
 \end{itemize}
 
 \subsection{FFT-based Algorithm}
-Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs. An FFT-based convolution for each convolutional layer can be broken up into $3$ steps: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT (iFFT) of the outputs. 
+Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs. An FFT-based convolution for each convolutional layer can be broken up into $3$ steps as shown in Fig.~\ref{CNN-FFT}: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT (iFFT) of the outputs.
 
 Although convolutions can be computed efficiently as products in the Fourier domain, the overheads incurred in computing the FFTs and iFFTs can be significant depending on the size of the inputs and filters. Modern convolutional networks use large size filters which makes the overheads of computing the FFTs worthwhile because we can effectively reuse our FFTs many times which compensates for the overhead \cite{FFT1}.
 
@@ -106,7 +106,7 @@ There are some potential drawbacks associated with this approach. Computing dire
 \centering
 \includegraphics[width=1\columnwidth]{CNN-FFT.eps}
 \caption{Block diagram showing FFT-based convolution in CNNs}
-\label{syn_lat}
+\label{CNN-FFT}
 \end{center}
 \end{figure}
 
