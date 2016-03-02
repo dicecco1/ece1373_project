@@ -30,11 +30,6 @@
 Roberto DiCecco, Muhammad Talha Malik, John Adler
 
 \section{Introduction}\label{section:intro}
-%\begin{itemize}
-%\item Overview of what you want to build.
-%\item A brief description why this project is interesting and why you want to do it.
-%\item A brief literature search to identify similar projects and then investigating the pros and cons of them.
-%\end{itemize}
 
 Convolutional networks are one of the most widely employed architectures in machine learning. Although convolutional networks deliver impressive results across a range of machine learning tasks, they are computationally demanding which limits their deployability. The focus of this project is speeding up the application of convolutional neural networks. Convolutional layers generally consume the bulk of the processing time, and so in this work we present different engines to be used for speeding up these layers.
 
@@ -72,17 +67,13 @@ Fourier transforms can provide a significant speedup in the computation of convo
 
 
 \section{Goal}\label{section:goal}
-%\begin{itemize}
-%\item
-%A brief explanation of what you want to achieve in your project and if possible what
-%advantage it has over the existing methods.
-%\end{itemize}
 
 The goal of this project is to evaluate the performance -- runtime and area in this case, since performance in a machine learning context usually means accuracy -- of various hardware implemententions of convolutional layers.
 Using the three techniques outlined in Section~\ref{section:intro}, optimized hardware implementations that will run on an FPGA will be designed.
 These will then be benchmarked against existing CPU and GPU implementations, with the expectation that (some of) the new hardware implementations will be able to achieve improved performance.
 
 \section{Specifications}\label{section:spec}
+
 \begin{itemize}
 \item The board that we will be using is the ADM-PCIE-7V3 Xilinx Alpha Data card
 with Virtex-7 690T. The reason for this selection is to take advantage of the
@@ -123,18 +114,10 @@ for a given layer with area constraints to allow for the accommodation of other
 layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Connected
 layers which have already been implemented. 
 
-%\begin{itemize}
-%\item Provide an adequate description of the system you want to build for your design.
-%\item What will be implemented using high-level synthesis?
-%\item What high-level synthesis flow do you plan to use?
-%\item You may include a flow chart (e.x. to describe the flow of data between various functions of your algorithm)
-%\item Include a block diagram and refer to it.
-%An example block diagram can be viewed at \href{http://www.eecg.toronto.edu/~pc/courses/532/2008/handouts/blockdiagram.pdf}{http://www.eecg.toronto.edu/\~{}pc/courses/532 /2008/handouts/blockdiagram.pdf}.
-%Note that it should also indicate the blocks you need to custom-build and the ones that you are obtaining from elsewhere.
-%\end{itemize}
-
 \subsection{Matrix Multiplication Algorithm}
-
+Implementing a matrix multiplication algorithm efficiently in hardware similar to that implemented in software in the Caffe framework will be challenging.
+Replicating data for the purpose of parallelizing computations is a straightforward task in software, but cannot be done in hardware without severe performance penalties due to the tight area constraits of an FPGA board.
+To work around this constraint, the control logic of accessing matrix elements can be parallelized instead.~\cite{MM_strassen,MM_efficient}
 
 \subsection{FFT-based Algorithm}
 Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs. An FFT-based convolution for each convolutional layer can be broken up into $3$ steps as shown in Fig.~\ref{CNN-FFT}: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT (iFFT) of the outputs.
@@ -144,7 +127,6 @@ Although convolutions can be computed efficiently as products in the Fourier dom
 There are some potential drawbacks associated with this approach. Computing direct convolution is much easier to implement in practice as compared to a well tuned FFT implementation. In addition to its complexity, the FFT requires feature maps to be padded to a special size, such as a power of two. Moreover, additional memory is required to store the filter matrices in the Fourier domain which might become prohibitively expensive in terms of memory for large networks.
 
 \subsection{Direct Convolution} 
-
 Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
 due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware 
 to suit the access and branching patterns of the system, such that there is negligible performance loss while achieving high
@@ -165,6 +147,7 @@ larger filter sizes as the area and timing requirements to unroll these sorts of
 \end{figure}
 
 \section{Testing}\label{section:testing}
+
 The testing procedure will be segmented into three primary steps for each design in the project.
 The first step will involve algorithmic testing in a separate C testbench similar to the usual C
 simulation in Vivado HLS. This process will be conducted while experimenting with the algorithms
@@ -187,6 +170,7 @@ main weaknesses of the team is that for the most part the tools will be relative
 so tool related issues could be a problem in the future. 
 
 \section{Milestones}\label{section:milestones}
+
 \begin{itemize}
     \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with 
 	the SDAccel tools through a simple HLS kernel (e.g. "Hello World"). 
