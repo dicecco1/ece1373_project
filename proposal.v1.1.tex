@@ -31,24 +31,24 @@ Roberto DiCecco, Muhammad Talha Malik, John Adler
 
 \section{Introduction}\label{section:intro}
 
-Convolutional networks are one of the most widely employed architectures in machine learning. Although convolutional networks deliver impressive results across a range of machine learning tasks, they are computationally demanding which limits their deployability. The focus of this project is speeding up the application of convolutional neural networks. Convolutional layers generally consume the bulk of the processing time, and so in this work we present different engines to be used for speeding up these layers.
+Convolutional neural networks (CNNs) are one of the most widely employed architectures in machine learning. Although convolutional networks deliver impressive results across a range of machine learning tasks, they are computationally demanding which limits their deployability. The focus of this project is speeding up the application of convolutional neural networks. Convolutional layers generally consume the bulk of the processing time, and so in this work we present different engines to be used for speeding up these layers.
 
-Our group will be performing an architecture exploration of the convolution layers commonly found in 
-Convolutional Neural Networks (CNNs). The architectures we will be exploring will be based off of three
-different approaches for implementing convolutions: the nested-loop based approach to convolutions, 
+Our group will be performing an architecture exploration of the convolution layers commonly found in
+CNNs. The architectures we will be exploring will be based off of three
+different approaches for implementing convolutions: the nested-loop based approach to convolutions,
 the matrix multiply based approach, and the Fast Fourier Transform (FFT) based approach. The architecture
-exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet. 
+exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet.
 
 One of the simplest approaches to implementing convolution is to implement it without any pre-processing of the data.
 This can be done by implementing convolution based off of equation \ref{eq:conv} as a series of nested loops. This has been
-the focus of other works, namely \cite{conv_zhang} which achieved significantly higher performance than prior implementations. 
+the focus of other works, namely \cite{conv_zhang} which achieved significantly higher performance than prior implementations.
 This approach has the potential for high levels of parallelism as the multiplications and many of the accumulations can be done
-in parallel. 
+in parallel.
 
 \begin{equation}\label{eq:conv}
-C_{i,j} = \sum_{p=0,q=0}^{p=K_x,q=K_y}A_{i\cdot S_y + p, j\cdot S_x + q}\cdot B_{p,q} 
+C_{i,j} = \sum_{p=0,q=0}^{p=K_x,q=K_y}A_{i\cdot S_y + p, j\cdot S_x + q}\cdot B_{p,q}
 \end{equation}
-Where\\ 
+Where\\
 \hspace*{2em} $C_{i,j}$ is the output at indices i,j;\\
 \hspace*{2em} $K_x$ is the horizontal dimension of the kernel;\\
 \hspace*{2em} $K_y$ is the vertical dimension of the kernel;\\
@@ -63,7 +63,7 @@ To take advantage of this, data is first preprocessed by ``stretching'' it -- re
 This new matrix can then be sent directly to one of many efficient linear algebra solvers, such as BLAS (which is used in the Caffe framework).
 The resultant matrix is the compressed back to the desired output dimensions of the convolutional layer.
 
-Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the Fast Fourier Transform (FFT) algorithm to accelerate the training and inference in CNNs.
+Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the FFT algorithm to accelerate the training and inference in CNNs.
 
 
 \section{Goal}\label{section:goal}
@@ -85,8 +85,8 @@ will be implemented as one of three different potential architectures: a direct
 convolution engine, a matrix multiply based convolution engine, and a Fast Fourier
 Transform based convolution engine.
 
-\item The final system will be able to classify images using the AlexNet CNN, with 
-comparable accuracy to the baseline implementations found in Caffe. 
+\item The final system will be able to classify images using the AlexNet CNN, with
+comparable accuracy to the baseline implementations found in Caffe.
 
 \item Peripheral Requirements: no other equipment is required other than the machine
 containing the ADM-PCIE-7V3.
@@ -98,21 +98,21 @@ with the Xilinx SDAccel platform.
 
 \section{System Overview}\label{section:overview}
 
-The high-level synthesis flow that will be used for this project will be the Xilinx 
-SDAccel flow. This will be used to implement each potential architecture for the 
-AlexNet convolutional layers. 
+The high-level synthesis flow that will be used for this project will be the Xilinx
+SDAccel flow. This will be used to implement each potential architecture for the
+AlexNet convolutional layers.
 
-The system that we will build for this project is the AlexNet CNN, though the work 
-will be applicable to other CNNs as well. The design of this system will involve the 
-selection between several different algorithms for the convolutional layers of the 
+The system that we will build for this project is the AlexNet CNN, though the work
+will be applicable to other CNNs as well. The design of this system will involve the
+selection between several different algorithms for the convolutional layers of the
 network as outlined in \ref{section:intro}. These implementations will then be ported
-to the Caffe CNN framework to be used within a full CNN (AlexNet). 
+to the Caffe CNN framework to be used within a full CNN (AlexNet).
 
-Each convolutional layer will be designed with two potential constraints in mind: 
+Each convolutional layer will be designed with two potential constraints in mind:
 maximum throughput for a given layer without area constraints and maximum throughput
-for a given layer with area constraints to allow for the accommodation of other 
+for a given layer with area constraints to allow for the accommodation of other
 layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Connected
-layers which have already been implemented. 
+layers which have already been implemented.
 
 \subsection{Matrix Multiplication Algorithm}
 Implementing the matrix multiplication technique efficiently in hardware similar to that implemented in software in the Caffe framework will be challenging.
@@ -128,16 +128,16 @@ Although convolutions can be computed efficiently as products in the Fourier dom
 
 There are some potential drawbacks associated with this approach. Computing direct convolution is much easier to implement in practice as compared to a well tuned FFT implementation. In addition to its complexity, the FFT requires feature maps to be padded to a special size, such as a power of two. Moreover, additional memory is required to store the filter matrices in the Fourier domain which might become prohibitively expensive in terms of memory for large networks.
 
-\subsection{Direct Convolution} 
+\subsection{Direct Convolution}
 Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
-due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware 
+due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware
 to suit the access and branching patterns of the system, such that there is negligible performance loss while achieving high
 levels of parallelism with this approach. High-level synthesis directives allow for the parallelism of the algorithm to be better
-exploited through the use of unroll and pipeline directives as needed. 
+exploited through the use of unroll and pipeline directives as needed.
 
 This approach can potentially result in high performance for certain convolution layers as there is minimal pre-processing overhead
 required prior to computing the results. On the other hand, it may be much more difficult to achieve higher performance in the case of
-larger filter sizes as the area and timing requirements to unroll these sorts of layers may be prohibitively expensive. 
+larger filter sizes as the area and timing requirements to unroll these sorts of layers may be prohibitively expensive.
 
 \begin{figure}[!h]
 \begin{center}
@@ -161,36 +161,36 @@ within the full system.
 
 \section{Risk}\label{section:risk}
 
-One primary risk for the project is that ramp up time for the toolset could be longer than 
-anticipated, which could result in delays with respect to finishing the design of each kernel. 
+One primary risk for the project is that ramp up time for the toolset could be longer than
+anticipated, which could result in delays with respect to finishing the design of each kernel.
 To try to mitigate this risk factor, we will plan to coordinate an initial task devoted to
-learning how to use SDAccel. 
+learning how to use SDAccel.
 
 The strengths of our team are that we all have familiarity with machine learning algorithms,
-with Roberto and John both having experience with the Caffe CNN framework as well. One of the 
+with Roberto and John both having experience with the Caffe CNN framework as well. One of the
 main weaknesses of the team is that for the most part the tools will be relatively new to use,
-so tool related issues could be a problem in the future. 
+so tool related issues could be a problem in the future.
 
 \section{Milestones}\label{section:milestones}
 
 \begin{itemize}
-    \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with 
-	the SDAccel tools through a simple HLS kernel (e.g. "Hello World"). 
-    \item Also in the first week, Roberto will implement a reprogram layer inside of Caffe to 
-	allow for the reprogramming of the FPGA to be decoupled from the kernel execution 
-	(this functionality has been implemented, but needs to be refined through a separate layer). 
-    \item In the second week, each of us will create our C implementations of the algorithms 
-	that we are each targeting for each of the convolution layers. Roberto: Direct convolution 
-	using nested loops, Muhammad: FFT based convolution, John: matrix multiply based convolution. 
+    \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with
+	the SDAccel tools through a simple HLS kernel (e.g. "Hello World").
+    \item Also in the first week, Roberto will implement a reprogram layer inside of Caffe to
+	allow for the reprogramming of the FPGA to be decoupled from the kernel execution
+	(this functionality has been implemented, but needs to be refined through a separate layer).
+    \item In the second week, each of us will create our C implementations of the algorithms
+	that we are each targeting for each of the convolution layers. Roberto: Direct convolution
+	using nested loops, Muhammad: FFT based convolution, John: matrix multiply based convolution.
 	\item In the second week, Roberto will also make some updates to the framework to accommodate
-	multiple layers in a single binary, and update it to include batch support. 
-    \item In the following two weeks each of us will focus on trying to improve throughput of our 
+	multiple layers in a single binary, and update it to include batch support.
+    \item In the following two weeks each of us will focus on trying to improve throughput of our
 	respective designs under the different layer constraints of AlexNet.
-    \item Afterwards, we will analyze the results of the respective designs, and decide which 
-	architecture will be suitable for the respective layers. Then we will begin system integration 
+    \item Afterwards, we will analyze the results of the respective designs, and decide which
+	architecture will be suitable for the respective layers. Then we will begin system integration
 	with Caffe.
-    \item In the last week we will conduct additional tests of the system with images from the 
-	ImageNet validation database. 
+    \item In the last week we will conduct additional tests of the system with images from the
+	ImageNet validation database.
 \end{itemize}
 
 
