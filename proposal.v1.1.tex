@@ -29,24 +29,29 @@
 \section{Group Members}
 Roberto DiCecco, Muhammad Talha Malik, John Adler
 
-\section{Introduction}
+\section{Introduction}\label{section:intro}
 \begin{itemize}
 \item Overview of what you want to build.
 \item A brief description why this project is interesting and why you want to do it.
 \item A brief literature search to identify similar projects and then investigating the pros and cons of them.
 \end{itemize}
 
+% TODO mat mul
+
 Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the Fast Fourier Transform (FFT) algorithm to accelerate the training and inference in CNNs.
 
 
-\section{Goal}
-\begin{itemize}
-\item
-A brief explanation of what you want to achieve in your project and if possible what
-advantage it has over the existing methods.
-\end{itemize}
+\section{Goal}\label{section:goal}
+%\begin{itemize}
+%\item
+%A brief explanation of what you want to achieve in your project and if possible what
+%advantage it has over the existing methods.
+%\end{itemize}
 
-\section{Specifications}
+The goal of this project is to evaluate the performance -- runtime and area in this case, since performance in a machine learning context usually means accuracy -- of various hardware implemententions of convolution layers.
+Using the three implementation outlines described in Section~\ref{section:intro}, 
+
+\section{Specifications}\label{section:spec}
 \begin{itemize}
 \item The board that we will be using is the ADM-PCIE-7V3 Xilinx Alpha Data card
 with Virtex-7 690T. The reason for this selection is to take advantage of the
@@ -69,7 +74,7 @@ to the board specifications and they must be written in C or OpenCL and be compa
 with the Xilinx SDAccel platform.
 \end{itemize}
 
-\section{System Overview}
+\section{System Overview}\label{section:overview}
 
 The high-level synthesis flow that will be used for this project will be the Xilinx
 SDAccel flow.
@@ -105,7 +110,7 @@ There are some potential drawbacks associated with this approach. Computing dire
 \end{center}
 \end{figure}
 
-\section{Testing}
+\section{Testing}\label{section:testing}
 The testing procedure will be segmented into three primary steps for each design in the project.
 The first step will involve algorithmic testing in a separate C testbench similar to the usual C
 simulation in Vivado HLS. This process will be conducted while experimenting with the algorithms
@@ -115,7 +120,7 @@ hardware versions of the HLS kernels will be tested within the framework using t
 against a subset of the Imagenet validation set to ensure functional correctness and accuracy
 within the full system.
 
-\section{Risk}
+\section{Risk}\label{section:risk}
 
 One primary risk for the project is that ramp up time for the toolset could be longer than
 anticipated, which could result in delays with respect to finishing the design of each kernel.
@@ -127,7 +132,7 @@ anticipated, which could result in delays with respect to finishing the design o
 \end{itemize}
 
 
-\section{Milestones}
+\section{Milestones}\label{section:milestones}
 \begin{itemize}
     \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with the SDAccel tools through a simple HLS kernel (e.g. "Hello World").
     \item Also in the first week, Roberto will implement a reprogram layer inside of Caffe to allow for decouple reprogramming between groups of layers.
