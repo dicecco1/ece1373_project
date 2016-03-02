@@ -37,7 +37,7 @@ Our group will be performing an architecture exploration of the convolution laye
 CNNs. The architectures we will be exploring will be based off of three
 different approaches for implementing convolutions: the nested-loop based approach to convolutions,
 the matrix multiply based approach, and the Fast Fourier Transform (FFT) based approach. The architecture
-exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet.
+exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet\cite{alexnet}.
 
 One of the simplest approaches to implementing convolution is to implement it without any pre-processing of the data.
 This can be done by implementing convolution based off of equation \ref{eq:conv} as a series of nested loops. This has been
@@ -107,9 +107,9 @@ with the Xilinx SDAccel platform.
 
 The high-level synthesis flow that will be used for this project will be the Xilinx
 SDAccel flow. This will be used to implement each potential architecture for the
-AlexNet convolutional layers.
+AlexNet \cite{alexnet} convolutional layers.
 
-The system that we will build for this project is the AlexNet CNN, though the work
+The system that we will build for this project is the AlexNet CNN \cite{alexnet}, though the work
 will be applicable to other CNNs as well. The design of this system will involve the
 selection between several different algorithms for the convolutional layers of the
 network as outlined in \ref{section:intro}. These implementations will then be ported
