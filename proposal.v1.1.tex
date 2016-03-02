@@ -38,6 +38,14 @@ Roberto DiCecco, Muhammad Talha Malik, John Adler
 
 Convolutional networks are one of the most widely employed architectures in machine learning. Although convolutional networks deliver impressive results across a range of machine learning tasks, they are computationally demanding which limits their deployability. The focus of this project is speeding up the application of convolutional neural networks. Convolutional layers generally consume the bulk of the processing time, and so in this work we present different engines to be used for speeding up these layers.
 
+Our group will be performing an architecture exploration of the convolution layers commonly found in 
+Convolutional Neural Networks (CNNs). The architectures we will be exploring will be based off of three
+different approaches for implementing convolutions: the nested-loop based approach to convolutions, 
+the matrix multiply based approach, and the Fast Fourier Transform (FFT) based approach. The architecture
+exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet. 
+
+% TODO standard conv
+
 % TODO mat mul
 
 Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the Fast Fourier Transform (FFT) algorithm to accelerate the training and inference in CNNs.
@@ -79,13 +87,20 @@ with the Xilinx SDAccel platform.
 
 \section{System Overview}\label{section:overview}
 
-The high-level synthesis flow that will be used for this project will be the Xilinx
-SDAccel flow.
+The high-level synthesis flow that will be used for this project will be the Xilinx 
+SDAccel flow. This will be used to implement each potential architecture for the 
+AlexNet convolutional layers. 
 
-The system that we will build for this project is the AlexNet CNN, though the work
-will be applicable to other CNNs as well. The design of this system will involve the
-selection between several different algorithms for the convolutional layers of the
-network.
+The system that we will build for this project is the AlexNet CNN, though the work 
+will be applicable to other CNNs as well. The design of this system will involve the 
+selection between several different algorithms for the convolutional layers of the 
+network. 
+
+Each convolutional layer will be designed with two potential constraints in mind: 
+maximum throughput for a given layer without area constraints and maximum throughput
+for a given layer with area constraints to allow for the accommodation of other 
+layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Connected
+layers which have already been implemented. 
 
 \begin{itemize}
 \item Provide an adequate description of the system you want to build for your design.
@@ -125,24 +140,33 @@ within the full system.
 
 \section{Risk}\label{section:risk}
 
-One primary risk for the project is that ramp up time for the toolset could be longer than
-anticipated, which could result in delays with respect to finishing the design of each kernel.
+One primary risk for the project is that ramp up time for the toolset could be longer than 
+anticipated, which could result in delays with respect to finishing the design of each kernel. 
+To try to mitigate this risk factor, we will plan to coordinate an initial task devoted to
+learning how to use SDAccel. 
 
-\begin{itemize}
-\item Identify risks attributed to your design which may cause your project to fail.
-\item Provide a contingency plan, develop milestones accordingly -- see Milestones section, for example, plan a catch up week where you are not planning any deliverables.
-\item Strengths and weaknesses of your team.
-\end{itemize}
-
+The strengths of our team are that we all have familiarity with machine learning algorithms,
+with Roberto and John both having experience with the Caffe CNN framework as well. One of the 
+main weaknesses of the team is that for the most part the tools will be relatively new to use,
+so tool related issues could be a problem in the future. 
 
 \section{Milestones}\label{section:milestones}
 \begin{itemize}
-    \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with the SDAccel tools through a simple HLS kernel (e.g. "Hello World").
-    \item Also in the first week, Roberto will implement a reprogram layer inside of Caffe to allow for decouple reprogramming between groups of layers.
-    \item In the second week, each of us will create our C implementations of the algorithms that we are each targeting for each of the convolution layers.
-    \item In the following two weeks each of us will focus on trying to improve throughput of our respective designs under the different layer constraints of AlexNet.
-    \item Afterward, we will analyze the results of the respective designs, and decide which architecture will be suitable for the respective layers. Then we will begin system integration with Caffe.
-    \item In the last week we will conduct additional tests of the system with images from the ImageNet validation database.
+    \item The first week will involve a ramp-up exercise to familiarize Muhammad and John with 
+	the SDAccel tools through a simple HLS kernel (e.g. "Hello World"). 
+    \item Also in the first week, Roberto will implement a reprogram layer inside of Caffe to 
+	allow for the reprogramming of the FPGA to be decoupled from the kernel execution 
+	(this functionality has been implemented, but needs to be refined through a separate layer). 
+    \item In the second week, each of us will create our C implementations of the algorithms 
+	that we are each targeting for each of the convolution layers. Roberto: Standard convolution 
+	using nested loops, Muhammad: FFT based convolution, John: matrix multiply based convolution. 
+    \item In the following two weeks each of us will focus on trying to improve throughput of our 
+	respective designs under the different layer constraints of AlexNet.
+    \item Afterwards, we will analyze the results of the respective designs, and decide which 
+	architecture will be suitable for the respective layers. Then we will begin system integration 
+	with Caffe.
+    \item In the last week we will conduct additional tests of the system with images from the 
+	ImageNet validation database. 
 \end{itemize}
 
 
