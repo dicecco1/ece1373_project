@@ -36,6 +36,8 @@ Roberto DiCecco, Muhammad Talha Malik, John Adler
 \item A brief literature search to identify similar projects and then investigating the pros and cons of them.
 \end{itemize}
 
+Convolutional networks are one of the most widely employed architectures in machine learning. Although convolutional networks deliver impressive results across a range of machine learning tasks, they are computationally demanding which limits their deployability. The focus of this project is speeding up the application of convolutional neural networks. Convolutional layers generally consume the bulk of the processing time, and so in this work we present different engines to be used for speeding up these layers.
+
 % TODO mat mul
 
 Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the Fast Fourier Transform (FFT) algorithm to accelerate the training and inference in CNNs.
