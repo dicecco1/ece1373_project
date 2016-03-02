@@ -115,9 +115,11 @@ layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Conne
 layers which have already been implemented. 
 
 \subsection{Matrix Multiplication Algorithm}
-Implementing a matrix multiplication algorithm efficiently in hardware similar to that implemented in software in the Caffe framework will be challenging.
+Implementing the matrix multiplication technique efficiently in hardware similar to that implemented in software in the Caffe framework will be challenging.
 Replicating data for the purpose of parallelizing computations is a straightforward task in software, but cannot be done in hardware without severe performance penalties due to the tight area constraits of an FPGA board.
-To work around this constraint, the control logic of accessing matrix elements can be parallelized instead.~\cite{MM_strassen,MM_efficient}
+To work around this constraint, the control logic of accessing matrix elements can be parallelized instead.
+
+Different configurations of efficient matrix multiplication algorithms~\cite{MM_strassen,MM_efficient} will be used to determine which results in the best performance when combined with control logic replication of varying degress.
 
 \subsection{FFT-based Algorithm}
 Convolutional layers generally consume the bulk of the processing time in CNNs. In order to reduce this time, we will implement an algorithm that computes convolutions as element wise multiplication in the Fourier domain. Not only this requires significantly less operations to compute, but it also exposes extra level of parallelism which is a very desirable characteristic in FPGAs. An FFT-based convolution for each convolutional layer can be broken up into $3$ steps as shown in Fig.~\ref{CNN-FFT}: an FFT of the input images and the filters, elementwise products followed by a sum across input channels, and then an inverse FFT (iFFT) of the outputs.
