@@ -36,7 +36,7 @@ Convolutional neural networks (CNNs) are one of the most widely employed archite
 Our group will be performing an architecture exploration of the convolution layers commonly found in
 CNNs. The architectures we will be exploring will be based off of three
 different approaches for implementing convolutions: the nested-loop based approach to convolutions,
-the matrix multiply based approach, and the Fast Fourier Transform (FFT) based approach. The architecture
+the matrix multiply based approach, the Fast Fourier Transform (FFT) based approach, and the Winograd Algorithm approach. The architecture
 exploration will target multiple sizes of convolutional layers, with the network in question being AlexNet\cite{alexnet}.
 
 One of the simplest approaches to implementing convolution is to implement it without any pre-processing of the data.
@@ -65,6 +65,11 @@ The resultant matrix is the compressed back to the desired output dimensions of 
 
 Fourier transforms can provide a significant speedup in the computation of convolutions in CNNs \cite{FFT1, FFT2}. This computational gain arises from the convenient property of operator duality between convolution in the spatial domain and element-wise multiplication in the frequency domain. In this project, we will use the FFT algorithm to accelerate the training and inference in CNNs.
 
+Another approach which shares some resemblances to the FFT based approach is the Winograd Algorithm \cite{winograd}. 
+This algorithm involves using the fact that a minimal filtering algorithm for an r-tap FIR filter exists. The 
+algorithm transforms the convolution operation into a format that can exploited by Winograd Algorithm to reduce the
+number of multiplications required to get the result. 
+
 
 \section{Goal}\label{section:goal}
 
@@ -89,8 +94,8 @@ Xilinx SDAccel platform for the project.
 \item The system will involve several different engines to be used for computing
 convolution for CNNs. Each convolution engine
 will be implemented as one of three different potential architectures: a direct
-convolution engine, a matrix multiply based convolution engine, and a Fast Fourier
-Transform based convolution engine.
+convolution engine, a matrix multiply based convolution engine, a Fast Fourier
+Transform based convolution engine, and a Winograd convolution engine. 
 
 \item The final system will be able to classify images using the AlexNet CNN, with
 comparable accuracy to the baseline implementations found in Caffe.
@@ -123,6 +128,7 @@ maximum throughput for a given layer without area constraints and maximum throug
 for a given layer with area constraints to allow for the accommodation of other
 layers. The other layers in question are the ReLU, LRN, Pooling, and Fully Connected
 layers which have already been implemented.
+
 \subsection{Direct Convolution}
 Implementing convolution using Equation \ref{eq:conv} could present challenges with respect to standard CPU or GPU architectures
 due to the amount of branching required along with the strided access patterns. In the case of FPGAs, we can customize the hardware
@@ -158,6 +164,14 @@ There are some potential drawbacks associated with this approach. Computing dire
 \end{center}
 \end{figure}
 
+\subsection{Winograd Convolution Algorithm}
+
+As mentioned in Section \ref{section:intro} the Winograd algorithm takes advantage of minimal FIR filtering algorithms
+to reduce the amount of multiplications required for a given convolution. If the minimal FIR filter is described as
+F(m, r) where m is the number of outputs, and r is the number of taps, then at most $m+r-1$ multiplications are
+required for this operation \cite{winograd}. As discussed in \cite{winograd}, F(mxm, rxr) can be used to implement a 
+convolution layer with kernels of rxr. This implementation allows for higher throughput when the kernel sizes are 
+small, however the expectation is that the Fourier Transform will begin to dominate for larger kernel sizes. 
 
 \section{Testing}\label{section:testing}
 
@@ -182,6 +196,13 @@ with Roberto and John both having experience with the Caffe CNN framework as wel
 main weaknesses of the team is that for the most part the tools will be relatively new to use,
 so tool related issues could be a problem in the future.
 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{gantt_chart.png}
+    \caption{Project Schedule}
+    \label{fig:gantt}
+\end{figure*}
+
 \section{Milestones}\label{section:milestones}
 
 \begin{itemize}
@@ -192,17 +213,19 @@ so tool related issues could be a problem in the future.
 	(this functionality has been implemented, but needs to be refined through a separate layer).
     \item In the second week, each of us will create our C implementations of the algorithms
 	that we are each targeting for each of the convolution layers. Roberto: Direct convolution
-	using nested loops, Muhammad: FFT based convolution, John: matrix multiply based convolution.
-	\item In the second week, Roberto will also make some updates to the framework to accommodate
-	multiple layers in a single binary, and update it to include batch support.
+	using nested loops and Winograd Algorithm, Muhammad: FFT based convolution, John: matrix 
+	multiply based convolution.
     \item In the following two weeks each of us will focus on trying to improve throughput of our
 	respective designs under the different layer constraints of AlexNet.
+	\item During this time Roberto will also make some updates to the framework to accommodate
+	multiple layers in a single binary and update it to include batch support.
     \item Afterwards, we will analyze the results of the respective designs, and decide which
 	architecture will be suitable for the respective layers. Then we will begin system integration
 	with Caffe.
     \item In the last week we will conduct additional tests of the system with images from the
-	ImageNet validation database.
+	ImageNet validation dataset.
 \end{itemize}
+
 
 
 \bibliographystyle{IEEEtran}
